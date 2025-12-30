@@ -244,7 +244,8 @@ def test_cli_list_reviews_for_media():
             "Dave"
         ],
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8"
     )
 
     # Arrange: add media
@@ -258,7 +259,8 @@ def test_cli_list_reviews_for_media():
             "movie"
         ],
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8"
     )
 
     # Arrange: add review
@@ -273,7 +275,8 @@ def test_cli_list_reviews_for_media():
             "Epic"
         ],
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8"
     )
 
     # Act: list reviews
@@ -286,7 +289,9 @@ def test_cli_list_reviews_for_media():
             "20"
         ],
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8"
+        
     )
 
     # Assert
