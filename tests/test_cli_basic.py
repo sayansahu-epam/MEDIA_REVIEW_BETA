@@ -298,3 +298,137 @@ def test_cli_list_reviews_for_media():
     assert result.returncode == 0
     assert "Reviews for media ID 20:" in result.stdout
     assert "User 20 → Rating: 5 | Epic" in result.stdout
+
+
+
+
+
+def test_cli_top_rated_media():
+    # Arrange: add user
+    subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--add-user",
+            "30",
+            "Eve"
+        ],
+        capture_output=True,
+        text=True
+    )
+
+    # Arrange: add media
+    subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--add-media",
+            "30",
+            "Joker",
+            "movie"
+        ],
+        capture_output=True,
+        text=True
+    )
+
+    # Arrange: add review
+    subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--review",
+            "30",
+            "30",
+            "5",
+            "Brilliant"
+        ],
+        capture_output=True,
+        text=True
+    )
+
+    # Act: top-rated
+    result = subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--top-rated"
+        ],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace"
+    )
+
+    # Assert
+    assert result.returncode == 0
+    assert "Top Rated Media:" in result.stdout
+    assert "Joker" in result.stdout
+
+
+
+
+
+def test_cli_recommendations():
+    # Arrange: add user
+    subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--add-user",
+            "40",
+            "Frank"
+        ],
+        capture_output=True,
+        text=True
+    )
+
+    # Arrange: add media
+    subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--add-media",
+            "40",
+            "Dark Knight",
+            "movie"
+        ],
+        capture_output=True,
+        text=True
+    )
+
+    # Arrange: add review (to create signal for recommendations)
+    subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--review",
+            "40",
+            "40",
+            "5",
+            "Masterpiece"
+        ],
+        capture_output=True,
+        text=True
+    )
+
+    # Act: get recommendations
+    result = subprocess.run(
+        [
+            sys.executable,
+            "media_review.py",
+            "--recommend",
+            "40"
+        ],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace"
+    )
+
+    # Assert
+    assert result.returncode == 0
+    assert (
+    "Recommendations for User 40:" in result.stdout
+    or "No recommendations available." in result.stdout
+    )
+
