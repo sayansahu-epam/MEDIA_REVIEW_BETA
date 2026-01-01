@@ -1,3 +1,10 @@
+import csv
+from services.review_service import add_review
+import time
+
+
+
+
 import sys
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -23,6 +30,48 @@ from services.media_service import list_all_media,add_media
 from database.db_connection import create_tables
 from services.user_service import add_user
 from services.review_service import add_review
+
+
+
+
+def handle_bulk_review(csv_path: str):
+    USER_ID = 1          # system/admin user
+    
+
+    with open(csv_path, newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+
+        for index, row in enumerate(reader):
+            try:
+                media_id = int(row["media_id"])
+                rating = int(row["rating"])
+                comment = row["comment"].strip()
+
+                if not (1 <= rating <= 5):
+                    raise ValueError("Rating must be between 1 and 5")
+
+                if not comment:
+                    raise ValueError("Comment cannot be empty")
+
+                review_id = int(time.time() * 1000) + index
+
+
+                add_review(
+                    review_id,
+                    USER_ID,
+                    media_id,
+                    rating,
+                    comment
+                )
+
+                print(f"✔ Added review for media {media_id}")
+
+            except Exception as e:
+                print(f"✘ Skipped row {index + 1}: {e}")
+
+
+
+
 
 
 
@@ -118,6 +167,15 @@ def main():
     metavar=("USER_ID", "MEDIA_ID", "RATING", "COMMENT"),
     help="Add a review for a media item by a user"
     )
+    
+    
+    
+    parser.add_argument(
+    "--bulk-review",
+    metavar="CSV_PATH",
+    help="Add multiple reviews from a CSV file"
+    )
+
 
 
 
@@ -168,6 +226,11 @@ def main():
             review_id, user_id, rating, comment = review
             print(f"User {user_id} → Rating: {rating} | {comment}")
 
+
+    
+    elif args.bulk_review:
+        handle_bulk_review(args.bulk_review)
+        return
 
             
             
