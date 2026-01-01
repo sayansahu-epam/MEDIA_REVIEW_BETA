@@ -101,6 +101,17 @@ def main():
     )
     
     
+    
+    
+    
+    parser.add_argument(
+    "--notification",
+    metavar="MEDIA_ID",
+    help="Get notifications for a media item"
+    )
+
+    
+    
     parser.add_argument(
     "--recommend",
     metavar="USER_ID",
@@ -282,6 +293,24 @@ def main():
 
         add_user(user_id, name)
         print("User added successfully.")
+        
+        
+        
+        
+    elif args.notification:
+        media_id = int(args.notification)
+        notifications = notification_service.get_notifications_for_media(media_id)
+
+        if not notifications:
+            print(f"No notifications for media ID {media_id}")
+            return
+
+        print(f"Notifications for media ID {media_id}:")
+        for note in notifications:
+            print(f"- {note}")
+
+        return
+
         
     elif args.review:
         

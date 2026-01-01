@@ -37,6 +37,17 @@ def create_tables():
             name TEXT NOT NULL
         )
     """)
+    
+    
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    media_id INTEGER NOT NULL,
+    message TEXT NOT NULL
+        )
+    """)
+
+
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS media (
