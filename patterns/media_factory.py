@@ -25,7 +25,8 @@
 
 
 
-from models.media import Media, Movie, Series
+from models.media import Media, Movie, Series, Song
+
 
 
 class MediaFactory:
@@ -38,6 +39,10 @@ class MediaFactory:
 
         elif media_type == "series":
             return Series(media_id, title)
+        
+        
+        elif media_type == "song":
+            return Song(media_id, title)
 
         else:
             # Fallback for unknown types

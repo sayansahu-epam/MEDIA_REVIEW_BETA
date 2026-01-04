@@ -13,3 +13,8 @@ class Movie(Media):
 class Series(Media):
     def __init__(self, media_id: int, title: str):
         super().__init__(media_id, title, "series")
+
+#Song added explicitly
+class Song(Media):
+    def __init__(self, media_id: int, title: str):
+        super().__init__(media_id, title, "song")
